@@ -19,3 +19,15 @@ cp .env.example .env
 ```bash
 go run main.go
 ```
+
+## Deploy
+
+1. Build docker image
+```bash
+docker build -t fusion-solar-scrapper .
+```
+
+2. Run docker container
+```bash
+docker run -d --name fusion-solar-scrapper fusion-solar-scrapper
+```

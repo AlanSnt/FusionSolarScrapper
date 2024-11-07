@@ -192,6 +192,11 @@ func Init() {
 
 	browserType, err := pw.Chromium.Launch(playwright.BrowserTypeLaunchOptions{
 		Headless: playwright.Bool(!debug.(bool)),
+		Args: []string{
+			"--disabled-dev-shm-usage",
+			"--single-process",
+			"--no-sandbox",
+		},
 	})
 
 	if err != nil {

@@ -35,10 +35,7 @@ func exec() {
 func main() {
 	log.Print("Fusion Solar scrapper is running")
 
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
+	godotenv.Load()
 
 	settings.Init()
 	mqtt.Init()
