@@ -15,7 +15,7 @@ var page playwright.Page
 
 func login() {
 	_, err := page.Reload(playwright.PageReloadOptions{
-		WaitUntil: playwright.WaitUntilStateNetworkidle,
+		WaitUntil: playwright.WaitUntilStateDomcontentloaded,
 	})
 
 	if err != nil {
@@ -66,7 +66,7 @@ func GetReturnedEnergy() float64 {
 
 	log.Print("Get ReturnedEnergy")
 	_, err = page.Goto(url.(string), playwright.PageGotoOptions{
-		WaitUntil: playwright.WaitUntilStateNetworkidle,
+		WaitUntil: playwright.WaitUntilStateDomcontentloaded,
 	})
 	if err != nil {
 		log.Fatal("(GetReturnedEnergy) Error on load page :", err)
@@ -124,7 +124,7 @@ func GetSolarData() float64 {
 
 	log.Print("Get SolarData")
 	_, err = page.Goto(url.(string), playwright.PageGotoOptions{
-		WaitUntil: playwright.WaitUntilStateNetworkidle,
+		WaitUntil: playwright.WaitUntilStateDomcontentloaded,
 	})
 	if err != nil {
 		log.Fatal("(GetSolarData) Error on load page :", err)
@@ -212,6 +212,9 @@ func Init() {
 		"User-Agent":      "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:88.0) Gecko/20100101 Firefox/88.0",
 		"Accept-Language": "fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3",
 	})
+
+	page.SetDefaultNavigationTimeout(120000)
+	page.SetDefaultTimeout(120000)
 
 	page.On("error", func(err error) {
 		log.Printf("(Headless browser) Error on: %s\n", err.Error())

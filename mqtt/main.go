@@ -1,7 +1,7 @@
 package mqtt
 
 import (
-	"github.com/eclipse/paho.mqtt.golang"
+	mqtt "github.com/eclipse/paho.mqtt.golang"
 
 	"AlanSnt/FusionSolarScrapper/settings"
 	"encoding/json"
@@ -24,7 +24,6 @@ func SendMessage(topicName string, value float64) {
 	token := client.Publish("fusion_solar_scrapper/sensor/"+topicName, 0, false, strconv.FormatFloat(value, 'f', -1, 64))
 	token.Wait()
 	log.Println("Message sent:", topicName, strconv.FormatFloat(value, 'f', -1, 64))
-
 }
 
 func sendDiscoverMessage() {
