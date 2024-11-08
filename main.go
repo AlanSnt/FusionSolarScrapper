@@ -57,8 +57,13 @@ func main() {
 
 	log.Print("Fusion Solar scrapper is ready")
 
+	timeDelta, err := settings.Get("TIME_DELTA")
+	if err != nil {
+		log.Fatal("Error:", err)
+	}
+
 	for {
 		exec()
-		time.Sleep(10 * time.Second)
+		time.Sleep(time.Duration(timeDelta.(int)) * time.Second)
 	}
 }

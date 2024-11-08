@@ -22,16 +22,6 @@ func login() {
 		log.Fatal("(Login) Error:", err)
 	}
 
-	username, err := settings.Get("USERNAME")
-	if err != nil {
-		log.Fatal("(Login) Error:", err)
-	}
-
-	password, err := settings.Get("PASSWORD")
-	if err != nil {
-		log.Fatal("(Login) Error:", err)
-	}
-
 	loginUserNameEntry, err := page.Locator("[name='ssoCredentials.username']").All()
 	if err != nil {
 		log.Fatal("(Login) Error:", err)
@@ -42,6 +32,15 @@ func login() {
 	}
 
 	loginPasswordEntry, err := page.Locator("[name='ssoCredentials.value']").All()
+	if err != nil {
+		log.Fatal("(Login) Error:", err)
+	}
+
+	username, err := settings.Get("USERNAME")
+	if err != nil {
+		log.Fatal("(Login) Error:", err)
+	}
+	password, err := settings.Get("PASSWORD")
 	if err != nil {
 		log.Fatal("(Login) Error:", err)
 	}
@@ -58,21 +57,14 @@ func login() {
 }
 
 func GetReturnedEnergy() float64 {
-	url, err := settings.Get("FUSION_SOLAR_URL")
+	log.Print("Get ReturnedEnergy")
+
+	login()
+
 	smartPvnName, err := settings.Get("SMART_PVM_NAME")
 	if err != nil {
 		log.Fatal("(GetReturnedEnergy) Error:", err)
 	}
-
-	log.Print("Get ReturnedEnergy")
-	_, err = page.Goto(url.(string), playwright.PageGotoOptions{
-		WaitUntil: playwright.WaitUntilStateDomcontentloaded,
-	})
-	if err != nil {
-		log.Fatal("(GetReturnedEnergy) Error on load page :", err)
-	}
-
-	login()
 
 	page.WaitForSelector(".nco-monitor-station-overview-management")
 	err = page.Locator(".flex-node-line-expand-part").Last().Click()
@@ -116,21 +108,14 @@ func GetReturnedEnergy() float64 {
 }
 
 func GetSolarData() float64 {
-	url, err := settings.Get("FUSION_SOLAR_URL")
-	smartPvnName, err := settings.Get("SMART_PVM_NAME")
-	if err != nil {
-		log.Fatal("Error:", err)
-	}
-
 	log.Print("Get SolarData")
-	_, err = page.Goto(url.(string), playwright.PageGotoOptions{
-		WaitUntil: playwright.WaitUntilStateDomcontentloaded,
-	})
-	if err != nil {
-		log.Fatal("(GetSolarData) Error on load page :", err)
-	}
 
 	login()
+	smartPvnName, err := settings.Get("SMART_PVM_NAME")
+	if err != nil {
+		log.Fatal("(GetReturnedEnergy) Error:", err)
+	}
+
 	page.WaitForSelector(".nco-monitor-station-overview-management")
 
 	err = page.Locator(".flex-node-line-expand-part").Last().Click()
@@ -231,5 +216,17 @@ func Init() {
 		page.On("response", func(response playwright.Response) {
 			log.Printf("(Headless browser) Response: %d %s\n", response.Status(), response.URL())
 		})
+	}
+
+	url, err := settings.Get("FUSION_SOLAR_URL")
+	if err != nil {
+		log.Fatal("Error:", err)
+	}
+
+	_, err = page.Goto(url.(string), playwright.PageGotoOptions{
+		WaitUntil: playwright.WaitUntilStateDomcontentloaded,
+	})
+	if err != nil {
+		log.Fatal("Error on load page :", err)
 	}
 }
