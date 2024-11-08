@@ -11,6 +11,7 @@ import (
 
 type Settings struct {
 	FUSION_SOLAR_URL string
+	SMART_PVM_NAME   string
 	TIME_DELTA       int
 	USERNAME         string
 	PASSWORD         string
@@ -54,6 +55,7 @@ func Init() {
 	once.Do(func() {
 		instance = &Settings{
 			FUSION_SOLAR_URL: getEnv("FUSION_SOLAR_URL"),
+			SMART_PVM_NAME:   getEnv("SMART_PVM_NAME"),
 			TIME_DELTA:       int(time_delta_int),
 			USERNAME:         getEnv("USERNAME"),
 			PASSWORD:         getEnv("PASSWORD"),
