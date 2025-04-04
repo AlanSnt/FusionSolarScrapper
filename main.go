@@ -45,8 +45,6 @@ func tryNetwork() {
 }
 
 func main() {
-	log.Print("Fusion Solar scrapper is running")
-
 	godotenv.Load()
 
 	settings.Init()

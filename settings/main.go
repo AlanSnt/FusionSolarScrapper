@@ -2,6 +2,7 @@ package settings
 
 import (
 	"errors"
+	"io"
 	"log"
 	"os"
 	"reflect"
@@ -65,6 +66,11 @@ func Init() {
 			MQTT_USER:        getEnv("MQTT_USER"),
 			MQTT_PASS:        getEnv("MQTT_PASS"),
 		}
+
+		if !instance.DEBUG_MODE {
+			log.SetOutput(io.Discard)
+		}
+
 		log.Println("Settings initialized")
 	})
 }

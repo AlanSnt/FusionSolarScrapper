@@ -175,7 +175,6 @@ func Init() {
 		Args: []string{
 			"--no-sandbox",
 			"--disable-setuid-sandbox",
-			"--window-size=1920,1080",
 		},
 	})
 
