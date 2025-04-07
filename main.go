@@ -6,6 +6,7 @@ import (
 	"AlanSnt/FusionSolarScrapper/settings"
 	"log"
 	"net"
+	"os/exec"
 	"time"
 
 	"math"
@@ -13,7 +14,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
-func exec() {
+func scrapp() {
 	solarProduction := 0.0
 	returnedEnergy := 0.0
 	consumedEnergy := 0.0
@@ -44,7 +45,22 @@ func tryNetwork() {
 	defer conn.Close()
 }
 
+func clearRootCache() {
+	cmd := "rm -rf /root/.cache/ms-playwright/*"
+	_, err := exec.Command("bash", "-c", cmd).Output()
+	if err != nil {
+		log.Fatal("Error:", err)
+	}
+
+	cmd = "rm -rf /root/.cache/playwright/*"
+	_, err = exec.Command("bash", "-c", cmd).Output()
+	if err != nil {
+		log.Fatal("Error:", err)
+	}
+}
+
 func main() {
+	clearRootCache()
 	godotenv.Load()
 
 	settings.Init()
@@ -61,7 +77,7 @@ func main() {
 	}
 
 	for {
-		exec()
+		scrapp()
 		time.Sleep(time.Duration(timeDelta.(int)) * time.Second)
 	}
 }
